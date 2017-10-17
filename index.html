@@ -1,0 +1,147 @@
+<html>
+	<head>
+ 		
+		<meta charset="UTF-8">
+		<title>New Time</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+		<style>
+			
+			body{
+			font-family: 'Roboto', sans-serif;
+			line-height: 50pt;
+			font-size: 12px;
+			margin-left: 8%;
+			}
+
+			h1{
+			font-family: 'Roboto', sans-serif;
+			font-style: bold;
+			line-height: 25pt;
+			font-size: 32px;
+			color: #000000;
+			margin: 100px 47px 52px 35px;
+			}
+
+			h2{
+			font-family: 'Roboto', sans-serif;
+			font-style: bold;
+			line-height: 25pt;
+			font-size: 18px;
+			color: #000000;
+			margin: 70px 50px 30px 35px;
+			}
+
+			h3{
+			font-family: 'Roboto', sans-serif;
+			font-style: bold;
+			line-height: 35pt;
+			font-size: 14px;
+			color: #000000;
+			margin: 0 0 0 0;
+			}
+
+			h4{
+			font-family: 'Roboto', sans-serif;
+			line-height: 2pt;
+			font-size: 12px;
+			color: #000000;
+			margin: 0;
+			}
+
+			.text{
+			font-family: 'Roboto', sans-serif;
+			line-height: 50pt;
+			font-size: 80px;
+			color: #363636;
+			margin: 70px 55% 180px 75px;
+			}
+			
+			/* unvisited link */
+			a:link {
+    		color: #ef4436;
+			}
+
+			/* visited link */
+			a:visited {
+   			color: #d68269;
+			}
+
+			/* mouse over link */
+			a:hover {
+    		color: #ef6036;
+			}
+
+			/* selected link */
+			a:active {
+   			color: #ef4436;
+			}
+
+			
+		
+		</style>
+
+
+	</head>
+	<body>
+
+		<div id="container"></div>
+
+		<script>
+
+			// var key = "AIzaSyCFybGaPd95jcfY1lbAJL2SxizQZXMJrS0";
+			// var url = "https://maps.googleapis.com/maps/api/timezone/json?location=59.33258, 18.0649&timestamp=1331161200&key=" + key;
+			// fetch(url)
+			// .then(function(response) {
+			// 	return response.json();
+			// })
+			
+			// .then(function(response) {
+			// 	console.log(response);
+			// 	console.log(response.timeZoneId);
+			// 	document.getElementById("container") + (response.timeZoneId);
+			// })
+            
+   //          function print(response) {
+   //          	console.log(response);
+			// 	container = document.getElementById("container");
+			// 	container.innerHTML = (response.timeZoneId);
+			// }
+			
+			var loc = '59.33258, 18.0649' // Stockholm expressed as lat,lng tuple
+			var targetDate = new Date() // Current date/time of user computer
+			var timestamp = targetDate.getTime()/1000 + targetDate.getTimezoneOffset() * 60 // Current UTC date/time expressed as seconds since midnight, January 1, 1970 UTC
+			var apikey = 'AIzaSyCFybGaPd95jcfY1lbAJL2SxizQZXMJrS0'
+			var apicall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + apikey
+ 
+			var xhr = new XMLHttpRequest() // create new XMLHttpRequest2 object
+			xhr.open('GET', apicall) // open GET request
+			xhr.onload = function(){
+              if (xhr.status === 200){ // if Ajax request successful
+                var output = JSON.parse(xhr.responseText) // convert returned JSON string to JSON object
+                console.log(output.status) // log API return status for debugging purposes
+                if (output.status == 'OK'){ // if API reports everything was returned successfully
+                  var offsets = output.dstOffset * 1000 + output.rawOffset * 1000 // get DST and time zone offsets in milliseconds
+                  var localdate = new Date(timestamp * 1000 + offsets) // Date object containing current time of Tokyo (timestamp + dstOffset + rawOffset)
+                  console.log(localdate.toLocaleString()) // Display current Stockholm date and time
+                  	
+                  // To here
+                  // Since you first give the local variable within this "xhr.onload" function
+                  // It won't have any value where you placed it before
+                  
+                  document.getElementById("container").innerHTML = '<div class="text">' + " " + localdate.getHours() + "." + localdate.getMinutes() + "." + localdate.getSeconds() + '/' + localdate.getDate() + '/' + (localdate.getMonth() + 1) + '/' +  localdate.getFullYear() + '</div>';
+                }
+              } else{
+                alert('Request failed.  Returned status of ' + xhr.status)
+              }
+			}
+			xhr.send() // send request
+
+			//var key = API user key from site - - var url = API-url source
+            
+            // Moved from here
+			// document.getElementById("container").innerHTML = '<div class="text">' + (localdate.toLocaleString()) + '</div>';
+
+		</script>
+	</body>
+</html>
