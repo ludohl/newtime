@@ -129,7 +129,7 @@
                   // Since you first give the local variable within this "xhr.onload" function
                   // It won't have any value where you placed it before
                   
-                  document.getElementById("container").innerHTML = '<div class="text">' + " " + localdate.getHours() + "." + localdate.getMinutes() + "." + localdate.getSeconds() + '/' + localdate.getDate() + '/' + (localdate.getMonth() + 1) + '/' +  localdate.getFullYear() + '</div>';
+                  document.getElementById("container").innerHTML = '<div class="text">' + " " + ('0'+localdate.getHours()).slice(-2) + "." + ('0'+localdate.getMinutes()).slice(-2) + "." + ('0'+localdate.getSeconds()).slice(-2) + '/' + ('0'+localdate.getDate()).slice(-2) + '/' + (localdate.getMonth() + 1) + '/' +  localdate.getFullYear() + '</div>';
                 }
               } else{
                 alert('Request failed.  Returned status of ' + xhr.status)
