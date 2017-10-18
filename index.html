@@ -54,7 +54,7 @@
 			line-height: 50pt;
 			font-size: 80px;
 			color: #363636;
-			margin: 70px 55% 180px 75px;
+			margin: 70px 20% 180px 75px;
 			}
 			
 			/* unvisited link */
@@ -113,29 +113,39 @@
 			var timestamp = targetDate.getTime()/1000 + targetDate.getTimezoneOffset() * 60 // Current UTC date/time expressed as seconds since midnight, January 1, 1970 UTC
 			var apikey = 'AIzaSyCFybGaPd95jcfY1lbAJL2SxizQZXMJrS0'
 			var apicall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + apikey
- 
+ 			
+ 			// var myVar = setInterval(document.getElementById("container").innerHTML, 500);
+
 			var xhr = new XMLHttpRequest() // create new XMLHttpRequest2 object
 			xhr.open('GET', apicall) // open GET request
+			
 			xhr.onload = function(){
               if (xhr.status === 200){ // if Ajax request successful
                 var output = JSON.parse(xhr.responseText) // convert returned JSON string to JSON object
                 console.log(output.status) // log API return status for debugging purposes
                 if (output.status == 'OK'){ // if API reports everything was returned successfully
-                  var offsets = output.dstOffset * 1000 + output.rawOffset * 1000 // get DST and time zone offsets in milliseconds
-                  var localdate = new Date(timestamp * 1000 + offsets) // Date object containing current time of Tokyo (timestamp + dstOffset + rawOffset)
-                  console.log(localdate.toLocaleString()) // Display current Stockholm date and time
-                  	
-                  // To here
-                  // Since you first give the local variable within this "xhr.onload" function
-                  // It won't have any value where you placed it before
-                  
-                  document.getElementById("container").innerHTML = '<div class="text">' + " " + ('0'+localdate.getHours()).slice(-2) + "." + ('0'+localdate.getMinutes()).slice(-2) + "." + ('0'+localdate.getSeconds()).slice(-2) + '/' + ('0'+localdate.getDate()).slice(-2) + '/' + (localdate.getMonth() + 1) + '/' +  localdate.getFullYear() + '</div>';
+                  setInterval(function() {
+                    var targetDate = new Date() // Current date/time of user computer
+                    var timestamp = targetDate.getTime()/1000 + targetDate.getTimezoneOffset() * 60 // Current UTC date/time expressed as seconds since midnight, January 1, 1970 UTC
+                    var offsets = output.dstOffset * 1000 + output.rawOffset * 1000 // get DST and time zone offsets in milliseconds
+                    var localdate = new Date(timestamp * 1000 + offsets) // Date object containing current time of Stockholm (timestamp + dstOffset + rawOffset)
+                    console.log(localdate.toLocaleString()) // Display current Stockholm date and time
+                   
+                    // To here
+                    // Since you first give the local variable within this "xhr.onload" function
+                    // It won't have any value where you placed it before
+
+                    document.getElementById("container").innerHTML = '<div class="text">' + "Time " + ('0'+localdate.getHours()).slice(-2) + "." + ('0'+localdate.getMinutes()).slice(-2) + "." + ('0'+localdate.getSeconds()).slice(-2) + '<br>Date ' + ('0'+localdate.getDate()).slice(-2) + '<br>Month ' + (localdate.getMonth() + 1) + '<br>Year ' +  (localdate.getFullYear() - 1945) + '</div>';
+                  }, 1000);
                 }
               } else{
                 alert('Request failed.  Returned status of ' + xhr.status)
               }
 			}
-			xhr.send() // send request
+
+			xhr.send(); // send request
+
+			// setInterval(xhr.open('GET', apicall), 500);
 
 			//var key = API user key from site - - var url = API-url source
             
