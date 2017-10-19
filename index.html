@@ -107,7 +107,12 @@
 			.clockbox {
 			}
 
+			/** Padding needs to go into same div as text is in, 
+			so I added the class to the div below! **/
 			
+			.infotext {
+				padding: 15px;
+			}
 		
 		</style>
 
@@ -195,19 +200,27 @@
 
 				$(document).on('mouseenter','#ayear', function() {
 					$('#infobox').show()
-					var text = '<div>This is the current year, counting from the start of the <a href="https://en.wikipedia.org/wiki/Anthropocene">anthropocene era.</a></div>';
+					
+					// Added a class to this div below (div class="infotext")
+					// so that we can target it with the padding in the CSS
+
+					var text = '<div class="infotext">This is the current year, counting from the start of the <a href="https://en.wikipedia.org/wiki/Anthropocene">anthropocene era.</a></div>';
 					console.log("ayear.enter")
 					$('#infobox').html(text);
 				});
 
 				$(document).on('mouseleave','#ayear', function() {
-					var text = "";
+					
+					//You can delete these commented out below!
+					//What it did was that it removed the text before the box has faded out
+					
+					//var text = ""; 		<----
+					//$('#infobox').html(text); 	<----
+					
 					console.log("ayear.leave")
-					$('#infobox').html(text);
-
 					setTimeout(function() {
-        	  			$("#infobox").fadeOut('slow')
-          		}, 2000);
+        	  				$("#infobox").fadeOut('slow')
+          				}, 2000);
 				});
 
 				$(document).on('mouseenter','#hyear', function() {
@@ -218,10 +231,11 @@
 				});
 
 				$(document).on('mouseleave','#hyear', function() {
-					var text = "";
+					// Same as above 
+					//var text = ""; 		<-----
+					//$('#infobox').html(text); 	<-----
+					
 					console.log("hyear.leave")
-					$('#infobox').html(text);
-
 					setTimeout(function() {
         	  			$("#infobox").fadeOut('slow')
           		}, 2000);
