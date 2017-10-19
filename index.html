@@ -1,0 +1,236 @@
+<html>
+	<head>
+ 		
+		<meta charset="UTF-8">
+		<title>New Time</title>
+		<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+		<style>
+			
+			body{
+			/*margin: 12% 0% 0px 17%;*/
+			}
+
+			*{
+			font-family: 'Lora', serif;
+			line-height: 10pt;
+			font-size: 12px;
+			color: #d1beb8;
+			margin:
+			}
+
+			h1{
+			font-family: 'Roboto', sans-serif;
+			line-height: 60pt;
+			font-size: 80px;
+			color: #d1beb8;
+			margin: 
+			}
+
+			h2{
+			font-family: 'Roboto', sans-serif;
+			line-height: 60pt;
+			font-size: 80px;
+			color: #d1beb8;
+			margin:
+			}
+
+			.numbers{
+			font-family: 'Nunito Sans', sans-serif;
+			font-weight: bold;
+			line-height: 60pt;
+			font-size: 80px;
+			color: #f15341;
+			margin: ;
+			display:inline
+			}
+
+			.text{
+			font-family: 'Nunito Sans', sans-serif;
+			font-weight: bold;
+			line-height: 60pt;
+			font-size: 80px;
+			color: #245ca4;
+			margin: ;
+			display:inline
+			}
+			
+			/* unvisited link */
+			a:link {
+    		color: #ef4436;
+			}
+
+			/* visited link */
+			a:visited {
+   			color: #d68269;
+			}
+
+			/* mouse over link */
+			a:hover {
+    		color: #ef6036;
+			}
+
+			/* selected link */
+			a:active {
+   			color: #ef4436;
+			}
+
+			#infobox {
+				font-family: 'Lora', serif;
+				display: none;
+				font-size: 10px;
+			    width: 28%;
+			    height: 50%;
+			    background-color: rgba(245, 245, 245, 0.5);
+			    color: #2b2b2b;
+			    text-align: ;
+			    padding: 15px, 15px, 15px, 15px;
+			    border-radius: 10px;
+			    right: 20px;
+			    justify-content: center;
+			 
+			    /* Position the tooltip text - see examples below! */
+			    position: absolute;
+			    z-index: 1;
+			}
+
+			#container {
+				width: 100%;
+				height: 90vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.clockbox {
+			}
+
+			
+		
+		</style>
+
+
+	</head>
+	<body>
+
+		<div id="container">
+			
+			<div id="clockbox">
+			</div>
+			<div id="infobox"> This is an information box hello</div>
+		</div>
+
+		<script>
+
+			// var key = "AIzaSyCFybGaPd95jcfY1lbAJL2SxizQZXMJrS0";
+			// var url = "https://maps.googleapis.com/maps/api/timezone/json?location=59.33258, 18.0649&timestamp=1331161200&key=" + key;
+			// fetch(url)
+			// .then(function(response) {
+			// 	return response.json();
+			// })
+			
+			// .then(function(response) {
+			// 	console.log(response);
+			// 	console.log(response.timeZoneId);
+			// 	document.getElementById("container") + (response.timeZoneId);
+			// })
+            
+   //          function print(response) {
+   //          	console.log(response);
+			// 	container = document.getElementById("container");
+			// 	container.innerHTML = (response.timeZoneId);
+			// }
+			
+			var loc = '59.33258, 18.0649' // Stockholm expressed as lat,lng tuple
+			var targetDate = new Date() // Current date/time of user computer
+			var timestamp = targetDate.getTime()/1000 + targetDate.getTimezoneOffset() * 60 // Current UTC date/time expressed as seconds since midnight, January 1, 1970 UTC
+			var apikey = 'AIzaSyCFybGaPd95jcfY1lbAJL2SxizQZXMJrS0'
+			var apicall = 'https://maps.googleapis.com/maps/api/timezone/json?location=' + loc + '&timestamp=' + timestamp + '&key=' + apikey
+ 			
+ 			// var myVar = setInterval(document.getElementById("container").innerHTML, 500);
+
+			var xhr = new XMLHttpRequest() // create new XMLHttpRequest2 object
+			xhr.open('GET', apicall) // open GET request
+			
+			xhr.onload = function(){
+              if (xhr.status === 200){ // if Ajax request successful
+                var output = JSON.parse(xhr.responseText) // convert returned JSON string to JSON object
+                console.log(output.status) // log API return status for debugging purposes
+                if (output.status == 'OK'){ // if API reports everything was returned successfully
+                  setInterval(function() {
+                    var targetDate = new Date() // Current date/time of user computer
+                    var timestamp = targetDate.getTime()/1000 + targetDate.getTimezoneOffset() * 60 // Current UTC date/time expressed as seconds since midnight, January 1, 1970 UTC
+                    var offsets = output.dstOffset * 1000 + output.rawOffset * 1000 // get DST and time zone offsets in milliseconds
+                    var localdate = new Date(timestamp * 1000 + offsets) // Date object containing current time of Stockholm (timestamp + dstOffset + rawOffset)
+                    console.log(localdate.toLocaleString()) // Display current Stockholm date and time
+                   
+                    // To here
+                    // Since you first give the local variable within this "xhr.onload" function
+                    // It won't have any value where you placed it before
+
+                    document.getElementById("clockbox").innerHTML = '<p class="text">' + "Time" + '</p>' + '<div class="numbers">' + ('0'+localdate.getHours()).slice(-2) + "." + ('0'+localdate.getMinutes()).slice(-2) + "." + ('0'+localdate.getSeconds()).slice(-2) + '</div>' + '<div class="text";>' + '<br>Date ' + '</div>' + '</div>' + '<div class="numbers">' + ('0'+localdate.getDate()).slice(-2) + '</div>' + '<div class="text" display:inline;>' + '<br>Month ' + '</div>' + '<div class="numbers" display:inline;>' + (localdate.getMonth() + 1) + '</div>' + '<div class="text" display:inline;>' + '<br>Year ' + '</div>' + '<div class="numbers" id="ayear" display:inline;>' + (localdate.getFullYear() - 1945) + ':' + '</div><span class="numbers" id="hyear">11945</span>';
+                  }, 1000);
+                }
+              } else{
+                alert('Request failed.  Returned status of ' + xhr.status)
+              }
+			}
+
+			xhr.send(); // send request
+
+			// setInterval(xhr.open('GET', apicall), 500);
+
+			//var key = API user key from site - - var url = API-url source
+            
+            // Moved from here
+			// document.getElementById("container").innerHTML = '<div class="text">' + (localdate.toLocaleString()) + '</div>';
+
+		</script>
+
+
+		<script>
+			$(document).ready(function() {
+
+				$(document).on('mouseenter','#ayear', function() {
+					$('#infobox').show()
+					var text = '<div>This is the current year, counting from the start of the <a href="https://en.wikipedia.org/wiki/Anthropocene">anthropocene era.</a></div>';
+					console.log("ayear.enter")
+					$('#infobox').html(text);
+				});
+
+				$(document).on('mouseleave','#ayear', function() {
+					var text = "";
+					console.log("ayear.leave")
+					$('#infobox').html(text);
+
+					setTimeout(function() {
+        	  			$("#infobox").fadeOut('slow')
+          		}, 2000);
+				});
+
+				$(document).on('mouseenter','#hyear', function() {
+					$('#infobox').show()
+					var text = "This is HYear";
+					console.log("hyear.enter")
+					$('#infobox').text(text);
+				});
+
+				$(document).on('mouseleave','#hyear', function() {
+					var text = "";
+					console.log("hyear.leave")
+					$('#infobox').html(text);
+
+					setTimeout(function() {
+        	  			$("#infobox").fadeOut('slow')
+          		}, 2000);
+				});
+
+
+
+			})
+
+		</script>
+	</body>
+</html>
